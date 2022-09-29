@@ -1,9 +1,12 @@
+<!--this component filter any items by any fields which was bind to it-->
+
 <template>
 	<input type="text" placeholder="filter..." v-model="filter" />
 	<hr/>
 	<ul>
 		<li v-for="item in filteredItems" :key="item.id">
-			<component :is="itemComponent" :item="item"/>
+<!--			create slot with any name and determine prop `item` which take item from filteredItems -->
+			<slot name="element" :item="item"/>
 		</li>
 	</ul>
 </template>
@@ -13,7 +16,6 @@ export default {
   name: 'UserList',
   props: {
     items: {type: Array, required: true},
-		itemComponent: {type: Object, required: true},
 		fields: {type: Array, required: true},
   },
 	data(){

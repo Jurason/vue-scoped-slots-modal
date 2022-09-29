@@ -1,10 +1,13 @@
+<!--this component describe presenting properties for some type of data (`users` in this case) -->
+
 <template>
-	{{ item.name }} ({{ item.username}})
+		<input type="checkbox">
+		{{ item.name }} ({{ item.username}})
 </template>
 
 <script>
 export default {
-	name: 'User-item',
+	name: 'UserItem',
 	props: {
 		item: {
 			type: Object,
@@ -12,4 +15,5 @@ export default {
 		}
 	}
 }
+
 </script>
