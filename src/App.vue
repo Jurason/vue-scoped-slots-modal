@@ -8,8 +8,14 @@
 			<Todo :element="slotProps.item"/>
 		</template>
 	</List>
-
 <!--	create modal element-->
+<button @click="isPopupOpen = true">Open popup</button>
+<Popup
+:is-open="isPopupOpen"
+@ok="popupConfirmed"
+@close="isPopupOpen = false">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam atque cum cupiditate ducimus et harum nemo officiis optio quisquam sit.
+</Popup>
 
 </template>
 
@@ -17,6 +23,7 @@
 import { loadUsers, loadTodos } from "./api";
 import List from './components/List.vue'
 import Todo from './components/Todo.vue'
+import Popup from './components/Popup.vue'
 
 
 export default {
@@ -24,12 +31,14 @@ export default {
   components: {
 		List,
 		Todo,
+		Popup
 	},
 	data() {
 		return {
 			users: [],
 			todos: [],
 			fields: [],
+			isPopupOpen: false
 		}
 	},
 	mounted() {
@@ -37,6 +46,10 @@ export default {
 		loadTodos().then(todos => this.todos = todos)
 	},
 	methods: {
+		popupConfirmed(){
+			alert('Confirmed!')
+			this.isPopupOpen = false
+		}
 	}
 }
 </script>
