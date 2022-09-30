@@ -8,4 +8,6 @@ export function loadTodos() {
         .then((response) => response.json())
 }
 
-
+export function deleteRepo() {
+    console.log('Delete request was sent!')
+}

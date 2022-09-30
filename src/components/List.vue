@@ -3,12 +3,15 @@
 <template>
 	<input type="text" placeholder="filter..." v-model="filter" />
 	<hr/>
-	<ul>
-		<li v-for="item in filteredItems" :key="item.id">
-<!--			create slot with any name and determine prop `item` which take item from filteredItems -->
-			<slot name="element" :item="item"/>
-		</li>
-	</ul>
+	<div class="container">
+		<ul>
+			<li v-for="element in filteredItems" :key="element.id">
+	<!--			create slot with any name and determine prop `item` which take item from filteredItems -->
+				<slot name="element" :item="element"/>
+			</li>
+		</ul>
+	</div>
+	<hr/>
 </template>
 
 <script>
@@ -33,3 +36,9 @@ export default {
 	}
 }
 </script>
+<style>
+	.container {
+		max-height: 200px;
+		overflow: scroll;
+	}
+</style>
