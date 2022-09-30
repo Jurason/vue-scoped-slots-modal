@@ -1,14 +1,14 @@
 <template>
-	<div class="backdrop" v-if="isOpen" @click="$emit('close')">
-		<div class="popup">
+	<div class="backdrop" v-if="isOpen" @click="close" @keypress.esc="close">
+		<div class="popup" @click.stop >
 			<h1>Attention!</h1>
 			<hr />
 			<slot></slot>
 			<hr />
 			<div class="footer">
-				<button @click="$emit('close')">Cancel</button>
+				<button @click="close">Cancel</button>
 				&nbsp;
-				<button @click="$emit('ok')">Ok</button>
+				<button @click="confirm">Ok</button>
 			</div>
 		</div>
 	</div>
@@ -29,8 +29,26 @@ export default {
 
 		}
 	},
+	mounted() {
+		document.addEventListener('keydown', this.handleKeyDown)
+	},
+	// убираем за собой, так как ранее повесили событие "вне" компонента на document
+	beforeUnmount() {
+		document.removeEventListener('keydown', this.handleKeyDown)
+	},
 	methods: {
-
+		// создаем именнованую функцию для последующего удаления (cb без имени удалить невозможно)
+		handleKeyDown(e){
+				if(this.isOpen && e.key === 'Escape'){
+					this.close()
+				}
+		},
+		close(){
+			this.$emit('close')
+		},
+		confirm(){
+			this.$emit('ok')
+		}
 	}
 }
 </script>
