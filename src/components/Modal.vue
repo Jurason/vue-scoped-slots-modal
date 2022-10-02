@@ -37,7 +37,18 @@ export default {
 
 		}
 	},
+	mounted() {
+		document.addEventListener('keydown', this.handleKeypress)
+	},
+	beforeUnmount() {
+		document.addEventListener('keydown', this.handleKeypress)
+	},
 	methods: {
+		handleKeypress(e){
+			if(this.open && e.key === 'Escape'){
+				this.close()
+			}
+		},
 		close(){
 			this.$emit('close', null)
 		},

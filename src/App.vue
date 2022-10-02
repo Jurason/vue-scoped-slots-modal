@@ -9,6 +9,7 @@
 		</template>
 	</List>
 	<button @click="openModal">Open modal</button>
+	&nbsp;
 	<button @click="openModalWithConfirmation">Open modal with delete confirmation</button>
 	<hr>
 <!--	create modal element-->
@@ -67,13 +68,28 @@ export default {
 	mounted() {
 		loadUsers().then(users => this.users = users)
 		loadTodos().then(todos => this.todos = todos)
+
+		document.addEventListener('keypress', this.handleKeypress)
 	},
+
+	beforeUnmount() {
+		document.addEventListener('keypress', this.handleKeypress)
+	},
+
 	computed: {
 		isConfirm(){
 			return this.confirmation === this.$options.CONFIRMATION_TEXT
 		}
 	},
 	methods: {
+		handleKeypress(e){
+			console.log('handleKeypress')
+			if(this.isConfirm && e.key === 'Enter'){
+				this.isModalOpen = false
+				console.log('request was sent')
+			}
+		},
+
 		openModal() {
 			this.isModalOpen = true
 			this.addConfirmation = false
