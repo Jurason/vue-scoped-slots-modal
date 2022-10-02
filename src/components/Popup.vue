@@ -6,17 +6,20 @@
 			<slot></slot>
 			<hr />
 			<div class="footer">
-				<button @click="close">Cancel</button>
-				&nbsp;
-				<button @click="confirm">Ok</button>
+<!--				create slot properties `emit` and bind $emit object to it. It allow generate components' events (in this case `ok` and `close`) from outside-->
+				<slot name="actions" :close="close" :confirm="confirm">
+					<button @click="close">Cancel</button>
+					&nbsp;
+					<button @click="confirm">Ok</button>
+				</slot>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-
 export default {
+	name: 'PopupModal',
 	props: {
 		isOpen: {type: Boolean, required: true}
 	},
