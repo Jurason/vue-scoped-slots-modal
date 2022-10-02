@@ -1,10 +1,14 @@
 <template>
 	<div class="footer">
-		<div class="confirm" v-if="deleteConfirmation">
+		<div class="confirm">
 			<slot name="confirmation"></slot>
 		</div>
 		<div class="close-button">
-			<button @click="close">Close modal</button>
+			<slot name="close-button">
+				<div>
+					<button @click="close">Close modal</button>
+				</div>
+			</slot>
 		</div>
 	</div>
 </template>
@@ -17,9 +21,6 @@ export default {
 		return {
 
 		}
-	},
-	props: {
-		deleteConfirmation: {type: Boolean, required: false}
 	},
 	emits: {
 		'close': {
@@ -46,13 +47,6 @@ export default {
 	margin-left: auto;
 }
 
-button {
-	height: 40px;
-	width: 150px;
-	font-size: 20px;
-	background: rgb(0 0 100 / .5);
-	color: #fff;
-}
 .confirm {
 	min-width: 60%;
 	text-align: left;

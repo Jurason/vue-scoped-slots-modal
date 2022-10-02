@@ -12,13 +12,24 @@
 	<button @click="openModalWithConfirmation">Open modal with delete confirmation</button>
 	<hr>
 <!--	create modal element-->
-<Modal @close="modalVisibility = false" :open="modalVisibility" :addConfirmation="addConfirmation">
+<Modal @close="isModalOpen = false" @confirm="isModalOpen = false" :open="isModalOpen" :addConfirmation="addConfirmation">
 	<template v-slot:content>
 		<List :items="users" :fields="['name', 'username']">
 			<template #element="{ item: user }">
 				<User :element="user"/>
 			</template>
 		</List>
+	</template>
+	<template #footer="{ close, confirm }" v-if="addConfirmation">
+		<div>
+		TYPE
+		&nbsp;
+		<input type="text" :placeholder="$options.CONFIRMATION_TEXT" v-model="confirmation">
+		</div>
+		<div>
+			<button @click="close">Cancel</button>
+			<button @click="confirm" :disabled="!isConfirm">Ok</button>
+		</div>
 	</template>
 </Modal>
 </template>
@@ -45,21 +56,31 @@ export default {
 			users: [],
 			todos: [],
 			fields: [],
-			modalVisibility: false,
-			addConfirmation: false
+			isModalOpen: false,
+			addConfirmation: false,
+			confirmation: '',
 		}
 	},
+
+	CONFIRMATION_TEXT: 'ACCEPT',
+
 	mounted() {
 		loadUsers().then(users => this.users = users)
 		loadTodos().then(todos => this.todos = todos)
 	},
+	computed: {
+		isConfirm(){
+			return this.confirmation === this.$options.CONFIRMATION_TEXT
+		}
+	},
 	methods: {
 		openModal() {
-			this.modalVisibility = true
+			this.isModalOpen = true
 			this.addConfirmation = false
 		},
 		openModalWithConfirmation() {
-			this.modalVisibility = true
+			this.confirmation = ''
+			this.isModalOpen = true
 			this.addConfirmation = true
 		}
 	}

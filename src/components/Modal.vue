@@ -6,57 +6,50 @@
 	<div class="content">
 		<slot name="content">Default content</slot>
 	</div>
-		<Footer @close="close" :delete-confirmation="this.addConfirmation">
-
-			<template #confirmation>
-				<input class="confirm" type="text" v-model="confirmationText" >
-			</template>
-
-		</Footer>
+	<div class="footer">
+		<slot name="footer" :close="close" :confirm="confirm">
+			<div class="one-button">
+				<button @click="close">Cancel</button>
+			</div>
+		</slot>
+	</div>
 </div>
 </template>
 
 <script>
-import Footer from './Footer'
-import { deleteRepo } from "../api";
 
 export default {
 	name: "ModalContent",
-	components: {
-		Footer,
-	},
 	props: {
 		open: {type: Boolean, required: false},
 		addConfirmation: {type: Boolean, required: false}
 	},
 	emits: {
 		'close': {
-			type: value => typeof value === 'boolean'
+
+		},
+		'confirm': {
+
 		}
 	},
 	data(){
 		return{
-			confirmationText: ''
+
 		}
 	},
 	methods: {
 		close(){
-			const confirmationInput = document.querySelector('.confirm')
-			if(confirmationInput && this.confirmationText !== 'I understand'){
-				alert('For deleting repo, please enter `I understand`!')
-				this.confirmationText=''
-			}
-			if(this.confirmationText === 'I understand'){
-				deleteRepo()
-				this.confirmationText=''
-			}
-			this.$emit('close', false)
+			this.$emit('close', null)
+		},
+		confirm(){
+			this.$emit('confirm', null)
+			console.log('request was sent')
 		}
 	}
 }
 </script>
 
-<style scoped>
+<style>
 	.modal {
 		width: 80%;
 		margin: auto;
@@ -76,6 +69,14 @@ export default {
 		justify-content: center;
 		align-items: center;
 		color: #fff;
+	}
+	.footer {
+		display: flex;
+		justify-content: space-between;
+		padding: 50px;
+	}
+	.one-button {
+		margin-left: auto;
 	}
 
 </style>
